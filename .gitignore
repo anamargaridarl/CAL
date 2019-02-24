@@ -9,4 +9,4 @@ Teoria
 *.zip
 cmake-build-debug
 .idea
-Praticas/src/cute
+Praticas/*/src/cute
