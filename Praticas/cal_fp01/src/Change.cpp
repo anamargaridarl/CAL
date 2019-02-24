@@ -3,27 +3,45 @@
  */
 
 #include "Change.h"
+#include <cstring>
+#include <iostream>
 
-int lastCoin(int i, int k, int *coinValues)
-{
-    for(unsigned int j = i-1; j >= 0; j--)
-    {
-        return coinValues[j];
-    }
-    return 0;
-}
+using namespace std;
 
-int minCoin(int i, int k, int *coinValue)
-{
-    if(k == 0|| i == 0)
-        return 0;
-    else
-        return minCoin(i,k-lastCoin())
-}
 string calcChange(int m, int numCoins, int *coinValues)
 {
+    int minCoins[m+1];
+    int lastCoin[m+1];
 
-    return "";
+    for(int i = 1; i < m +1;i++)
+    {
+        minCoins[i] = 2000;
+        lastCoin[i]=0;
+    }
+
+    if(m == 0)
+        return "";
+    if(m < coinValues[0])
+        return "-";
+
+    for(int i = 0; i < numCoins; i++) {
+        for (int k = coinValues[i]; k <= m; k++) {
+            if (1 + minCoins[k - coinValues[i]] < minCoins[k]) {
+                minCoins[k] = 1 + minCoins[k - coinValues[i]];
+                lastCoin[k] = i;
+            }
+        }
+    }
+
+    string change = "";
+
+    for(int k = m; k > 0; k -= coinValues[lastCoin[k]])
+    {
+        change = change + to_string(coinValues[lastCoin[k]]) + ";";
+    }
+
+    return change;
+
 }
 
 
