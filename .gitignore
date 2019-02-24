@@ -1,4 +1,5 @@
 CMakeCache.txt
+CMakeLists.txt
 CMakeFiles
 CMakeScripts
 Makefile
@@ -8,4 +9,4 @@ Teoria
 *.zip
 cmake-build-debug
 .idea
-src/cute/*
+*/src/cute/*
