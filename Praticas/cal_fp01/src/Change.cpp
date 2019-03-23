@@ -8,10 +8,13 @@
 
 using namespace std;
 
+
 string calcChange(int m, int numCoins, int *coinValues)
 {
     int minCoins[m+1];
     int lastCoin[m+1];
+
+    minCoins[0] =0;
 
     for(int i = 1; i < m +1;i++)
     {
@@ -41,6 +44,7 @@ string calcChange(int m, int numCoins, int *coinValues)
     }
 
     return change;
+
 
 }
 
