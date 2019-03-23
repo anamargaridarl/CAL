@@ -94,17 +94,57 @@ bool Sudoku::isComplete()
  */
 bool Sudoku::solve()
 {
-	int min = 100;
-	int array[2];
-
-	for(int i = 0; i < 9; i++)
-	{
-		for(int j = 0; j< 9; j++)
-			if()
-	}
-	return false;
+	return solve(0,0);
 }
 
+bool Sudoku::solve(int i, int j) {
+
+    if(isComplete() || i > 8 || j >8)
+    	return true;
+
+    pair<int,int> sqr;
+
+
+	//caso quadrado esteja preenchido
+    if(numbers[i][j] != 0)
+	{
+		if(i == 8 && j == 8)
+			return true;
+
+			//continua para o proximo
+			sqr = nextSquare(i,j);
+			return solve(sqr.first, sqr.second);
+
+	}
+
+    for(int n = 1; n <= 9 ; n++)
+	{
+    	//caso o numero ja exista na coluna , linha e quadrado grande respetivo passa para a proxima iteração
+    	if( block3x3HasNumber[i/3][j/3][n] || columnHasNumber[j][n] || lineHasNumber[i][n])
+			continue;
+    	else
+		{
+    		//preencher quadrado
+    		fillSqr(i,j,n);
+
+    		//avançar para proxima
+			sqr = nextSquare(i,j);
+
+			//verificar se o puzzle se resolve com este numero nesta casa
+			if(solve(sqr.first,sqr.second))
+				return true;
+
+			//senao apagar o numero e tentar com outro
+			else {
+				unFillSqr(i,j,n);
+				continue;
+			}
+
+		}
+	}
+
+    return false;
+}
 
 
 /**
@@ -119,4 +159,29 @@ void Sudoku::print()
 
 		cout << endl;
 	}
+}
+
+void Sudoku::fillSqr(int i, int j, int n) {
+    numbers[i][j] = n;
+    block3x3HasNumber[i/3][j/3][n] = true;
+    columnHasNumber[j][n] = true;
+    lineHasNumber[i][n]=true;
+    countFilled++;
+}
+
+pair<int, int> Sudoku::nextSquare(int i, int j) {
+    if(i == 8) {
+        return make_pair(0,j+1);
+    }
+    else {
+        return make_pair(i+1,j);
+    }
+}
+
+void Sudoku::unFillSqr(int i, int j, int n) {
+    numbers[i][j] =0;
+    block3x3HasNumber[i/3][j/3][n] = false;
+    columnHasNumber[j][n] = false;
+    lineHasNumber[i][n]=false;
+    countFilled--;
 }

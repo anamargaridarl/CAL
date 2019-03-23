@@ -40,7 +40,7 @@ void  Labirinth::printLabirinth()
 	}
 }
 
-/*
+
 bool Labirinth::findGoal(int x, int y)
 {
     if(labirinth[x][y] == 2)
@@ -60,8 +60,8 @@ bool Labirinth::findGoal(int x, int y)
     }
 
 }
-*/
 
+/*
 bool Labirinth::findGoal(int x, int y) {
     if (labirinth[x][y] == 2)
         return true;
@@ -102,7 +102,7 @@ bool Labirinth::findGoal(int x, int y) {
 
 
 }
-
+*/
 
 
 
