@@ -298,6 +298,44 @@ template<class T>
 vector<T> Graph<T>::topsort() const {
 	// TODO (26 lines)
 	vector<T> res;
+	queue<Vertex<T>*> q;
+
+    for(auto v: vertexSet)
+    {
+        v->indegree = 0;
+    }
+
+    for(auto v: vertexSet)
+    {
+        for(auto adjacente: v->adj) {
+            adjacente.dest->indegree += 1;
+        }
+    }
+
+    for(auto v: vertexSet)
+    {
+        if(v->indegree == 0)
+            q.push(v);
+    }
+
+    while(!q.empty())
+    {
+        Vertex<T> *v = q.front();
+        q.pop();
+        res.push_back(v->info);
+
+        for(auto adjacente: v->adj)
+        {
+            adjacente.dest->indegree -=1;
+            if(adjacente.dest->indegree == 0)
+            {
+                q.push(adjacente.dest);
+            }
+        }
+
+    }
+
+
 	return res;
 }
 
@@ -314,7 +352,44 @@ vector<T> Graph<T>::topsort() const {
 template <class T>
 int Graph<T>::maxNewChildren(const T & source, T &inf) const {
 	// TODO (28 lines, mostly reused)
-	return 0;
+
+    queue<Vertex<T>*> q;
+    vector<T> res;
+    int newchilds = 0;
+    int maxchilds = 0;
+
+    for(auto v: vertexSet)
+    {
+        v->visited = false;
+    }
+
+    q.push(vertexSet.at(0));
+
+    while(!q.empty())
+    {
+        Vertex<T> *v = q.front();
+        v->visited = true;
+        q.pop();
+        res.push_back(v->info);
+        for(auto adjacente : v->adj )
+        {
+            if(!adjacente.dest->visited) { //filhos apenas aqueles que ainda nao foram visitados
+                q.push(adjacente.dest);
+                newchilds++;
+            }
+        }
+
+        if(newchilds > maxchilds)
+        {
+            maxchilds = newchilds;
+            inf  = v->info;
+        }
+
+        newchilds = 0;
+    }
+
+    return maxchilds;
+
 }
 
 /****************** 3b) isDAG   (HOME WORK)  ********************/
